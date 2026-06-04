@@ -1,0 +1,67 @@
+﻿@model CustomerEngagementPlatform.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1>Customer Engagement Dashboard</h1>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-md-3">
+        <a asp-controller="Customers" asp-action="Index" class="text-decoration-none text-dark">
+            <div class="card p-3">
+                <h4>Total Customers</h4>
+                <h2 id="totalCustomers">@Model.TotalCustomers</h2>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a asp-controller="Tickets" asp-action="Index" class="text-decoration-none text-dark">
+            <div class="card p-3">
+                <h4>Total Tickets</h4>
+                <h2 id="totalTickets">@Model.TotalTickets</h2>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a asp-controller="Tickets" asp-action="Index" asp-route-statusFilter="Open" class="text-decoration-none text-dark">
+            <div class="card p-3">
+                <h4>Open Tickets</h4>
+                <h2 id="openTickets">@Model.OpenTickets</h2>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a asp-controller="Tickets" asp-action="Index" asp-route-statusFilter="Resolved" class="text-decoration-none text-dark">
+            <div class="card p-3">
+                <h4>Resolved Tickets</h4>
+                <h2 id="resolvedTickets">@Model.ResolvedTickets</h2>
+            </div>
+        </a>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        fetch('/Home/GetDashboardStats')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('totalCustomers').innerText = data.totalCustomers;
+                document.getElementById('totalTickets').innerText = data.totalTickets;
+                document.getElementById('openTickets').innerText = data.openTickets;
+                document.getElementById('resolvedTickets').innerText = data.resolvedTickets;
+
+                console.log("Dashboard stats loaded using AJAX");
+            })
+            .catch(error => {
+                console.log("Dashboard AJAX error", error);
+            });
+    </script>
+}
