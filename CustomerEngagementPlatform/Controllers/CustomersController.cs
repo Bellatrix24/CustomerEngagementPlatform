@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CustomerEngagementPlatform.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Staff")]
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,7 +18,7 @@ namespace CustomerEngagementPlatform.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Customers.ToListAsync());
+            return View(await _context.Customers.Include(c => c.Tickets).ToListAsync());
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -119,11 +119,19 @@ namespace CustomerEngagementPlatform.Controllers
             }
 
             var customer = await _context.Customers
+                .Include(c => c.Tickets)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (customer == null)
             {
                 return NotFound();
+            }
+
+            var hasActiveTickets = customer.Tickets.Any(t => t.Status == "Open" || t.Status == "In Progress");
+            ViewBag.HasActiveTickets = hasActiveTickets;
+            if (hasActiveTickets)
+            {
+                ViewBag.ErrorMessage = "Cannot delete this customer because they have active tickets. Please resolve or close their tickets first.";
             }
 
             return View(customer);
@@ -133,14 +141,24 @@ namespace CustomerEngagementPlatform.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)
         {
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await _context.Customers
+                .Include(c => c.Tickets)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (customer != null)
             {
+                var hasActiveTickets = customer.Tickets.Any(t => t.Status == "Open" || t.Status == "In Progress");
+                if (hasActiveTickets)
+                {
+                    ViewBag.HasActiveTickets = true;
+                    ViewBag.ErrorMessage = "Cannot delete this customer because they have active tickets. Please resolve or close their tickets first.";
+                    return View(customer);
+                }
+
                 _context.Customers.Remove(customer);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

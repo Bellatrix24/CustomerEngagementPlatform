@@ -1,4 +1,4 @@
-﻿using CustomerEngagementPlatform.DTOs;
+using CustomerEngagementPlatform.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -42,7 +42,7 @@ namespace CustomerEngagementPlatform.Controllers.Api
             {
                 new Claim(ClaimTypes.Name, user.Email ?? ""),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Role, "SupportAgent")
+                new Claim(ClaimTypes.Role, "Staff")
             };
 
             var key = new SymmetricSecurityKey(

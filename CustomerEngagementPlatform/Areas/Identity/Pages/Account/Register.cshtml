@@ -1,0 +1,111 @@
+@page
+@model CustomerEngagementPlatform.Areas.Identity.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Customer Registration";
+    ViewData["HideNavbar"] = true;
+}
+
+<style>
+    .brutalist-container {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .brutalist-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 3rem;
+        font-size: 1rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 0 !important;
+        transition: all 0.15s ease-in-out;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    .brutalist-btn-primary {
+        background-color: #111111;
+        color: #ffffff;
+        border: 2px solid #111111;
+    }
+    .brutalist-btn-primary:hover {
+        background-color: #0044cc;
+        border-color: #0044cc;
+        color: #ffffff;
+    }
+    .form-control:focus {
+        border-color: #111111 !important;
+        box-shadow: none !important;
+    }
+    .form-check-input:checked {
+        background-color: #111111 !important;
+        border-color: #111111 !important;
+    }
+    .form-check-input:focus {
+        box-shadow: none !important;
+        border-color: #111111 !important;
+    }
+</style>
+
+<div class="container brutalist-container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <!-- Back Navigation -->
+            <div class="mb-4">
+                <a href="/" class="text-decoration-none d-inline-flex align-items-center fw-medium" style="font-size: 0.95rem; color: #111111;">
+                    ← Back
+                </a>
+            </div>
+
+            <!-- Card Wrapper -->
+            <div class="card p-2" style="border: 2px solid #111111; border-radius: 0 !important; box-shadow: none !important; background-color: #ffffff;">
+                <!-- Header -->
+                <div class="card-header bg-white py-4" style="border-bottom: 2px solid #111111; border-radius: 0 !important;">
+                    <h4 class="mb-1" style="font-weight: 300; letter-spacing: -0.02rem; color: #111111;">Customer Registration</h4>
+                    <p class="text-muted mb-0 small">Create a new customer account to access the portal.</p>
+                </div>
+                
+                <!-- Body -->
+                <div class="card-body p-4">
+                    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label asp-for="Input.Email" class="form-label fw-medium" style="color: #111111;">Email Address</label>
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" style="border-radius: 0 !important; border: 1px solid #cccccc; color: #111111;" />
+                            <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label asp-for="Input.Password" class="form-label fw-medium" style="color: #111111;">Password</label>
+                            <input asp-for="Input.Password" type="password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="••••••••" style="border-radius: 0 !important; border: 1px solid #cccccc; color: #111111;" />
+                            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="mb-4">
+                            <label asp-for="Input.ConfirmPassword" class="form-label fw-medium" style="color: #111111;">Confirm Password</label>
+                            <input asp-for="Input.ConfirmPassword" type="password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="••••••••" style="border-radius: 0 !important; border: 1px solid #cccccc; color: #111111;" />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="w-100 brutalist-btn brutalist-btn-primary py-2 mb-3">
+                            Register Account
+                        </button>
+
+                        <div class="text-center mt-2">
+                            <span class="text-muted small">Already have an account? </span>
+                            <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-underline small fw-semibold" style="color: #111111;">Login here</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

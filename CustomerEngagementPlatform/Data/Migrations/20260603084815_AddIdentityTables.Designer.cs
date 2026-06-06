@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomerEngagementPlatform.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260604195625_AddIdentityTables")]
+    [Migration("20260603084815_AddIdentityTables")]
     partial class AddIdentityTables
     {
         /// <inheritdoc />

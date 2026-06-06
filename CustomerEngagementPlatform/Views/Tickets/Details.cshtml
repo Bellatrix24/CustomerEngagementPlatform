@@ -2,42 +2,313 @@
 
 @{
     ViewData["Title"] = "Ticket Details";
+    ViewData["HideNavbar"] = true;
 }
 
-<h1>Ticket Details</h1>
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Archivo:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 
-<div>
-    <h4>Ticket</h4>
-    <hr />
+    .portal-wrapper {
+        font-family: 'Archivo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: #111111;
+        background-color: #fafafa;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+    }
 
-    <dl class="row">
-        <dt class="col-sm-2">Subject</dt>
-        <dd class="col-sm-10">@Model.Subject</dd>
+    .brutalist-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.8rem;
+        padding: 0 1.5rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 0 !important;
+        transition: all 0.15s ease-in-out;
+        text-align: center;
+        box-sizing: border-box;
+        border: none;
+    }
 
-        <dt class="col-sm-2">Description</dt>
-        <dd class="col-sm-10">@Model.Description</dd>
+    .brutalist-btn-primary {
+        background-color: #111111;
+        color: #ffffff;
+        border: 2px solid #111111;
+    }
 
-        <dt class="col-sm-2">Status</dt>
-        <dd class="col-sm-10">@Model.Status</dd>
+    .brutalist-btn-primary:hover {
+        background-color: #333333;
+        border-color: #333333;
+        color: #ffffff;
+    }
 
-        <dt class="col-sm-2">Priority</dt>
-        <dd class="col-sm-10">@Model.Priority</dd>
+    .brutalist-btn-outline {
+        background-color: #ffffff;
+        color: #111111;
+        border: 1px solid #cccccc;
+        font-size: 0.85rem;
+        font-weight: 500;
+        height: 2.2rem;
+        padding: 0 1rem;
+    }
 
-        <dt class="col-sm-2">Assigned Agent</dt>
-        <dd class="col-sm-10">@Model.AssignedAgent</dd>
+    .brutalist-btn-outline:hover {
+        border-color: #111111;
+        background-color: #f9f9f9;
+        color: #111111;
+    }
 
-        <dt class="col-sm-2">Created At</dt>
-        <dd class="col-sm-10">@Model.CreatedAt</dd>
+    .brutalist-card {
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 0 !important;
+        padding: 3rem;
+        box-shadow: none !important;
+    }
 
-        <dt class="col-sm-2">Updated At</dt>
-        <dd class="col-sm-10">@Model.UpdatedAt</dd>
+    .action-link {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #111111;
+        text-decoration: underline;
+        transition: color 0.15s ease;
+    }
 
-        <dt class="col-sm-2">Customer</dt>
-        <dd class="col-sm-10">@Model.Customer?.Name</dd>
-    </dl>
-</div>
+    .action-link:hover {
+        color: #0044cc;
+    }
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    /* Muted Premium Badge Colors */
+    .badge-priority-high {
+        display: inline-block;
+        background-color: #fdf2f2 !important;
+        color: #9b1c1c !important;
+        border: 1px solid #f8b4b4 !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-priority-medium {
+        display: inline-block;
+        background-color: #fffaf0 !important;
+        color: #b45309 !important;
+        border: 1px solid #fbd38d !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-priority-low {
+        display: inline-block;
+        background-color: #f3f4f6 !important;
+        color: #4b5563 !important;
+        border: 1px solid #d1d5db !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-status-open {
+        display: inline-block;
+        background-color: #f0f9ff !important;
+        color: #0369a1 !important;
+        border: 1px solid #bae6fd !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-status-progress {
+        display: inline-block;
+        background-color: #fffbeb !important;
+        color: #b45309 !important;
+        border: 1px solid #fde68a !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-status-resolved {
+        display: inline-block;
+        background-color: #f0fdf4 !important;
+        color: #166534 !important;
+        border: 1px solid #bbf7d0 !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-status-default {
+        display: inline-block;
+        background-color: #f3f4f6 !important;
+        color: #374151 !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+</style>
+
+<div class="portal-wrapper">
+    <!-- Header/Back Navigation -->
+    <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <a asp-action="Index" class="text-decoration-none d-inline-flex align-items-center fw-medium" style="font-size: 0.95rem; color: #111111;">
+            ← Back to Tickets
+        </a>
+        <div class="d-flex align-items-center gap-3 text-muted small flex-wrap">
+            <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-underline text-muted fw-medium" style="font-size: 0.9rem;">Dashboard</a>
+            <span class="text-muted">|</span>
+            <a asp-controller="Customers" asp-action="Index" class="text-decoration-underline text-muted fw-medium" style="font-size: 0.9rem;">Customers</a>
+            <span class="text-muted">|</span>
+            <span>Logged in as <strong>@User.Identity?.Name</strong></span>
+            <span class="text-muted">|</span>
+            <form class="d-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                <button type="submit" class="btn btn-link text-muted p-0 align-baseline text-decoration-underline small" style="font-size: 0.85rem;">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Title Header -->
+    <div class="mb-5 pb-4 border-bottom" style="border-bottom-color: #dddddd !important;">
+        <h1 class="display-6 mb-2" style="font-family: 'Fraunces', Georgia, serif; font-weight: 300; color: #111111; letter-spacing: -0.05rem;">Ticket Details</h1>
+        <p class="text-muted mb-0" style="font-size: 1.05rem;">Detailed view and management for Ticket #@Model.Id</p>
+    </div>
+
+    <!-- Ticket Details Card -->
+    <div class="brutalist-card">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 border-bottom pb-4 mb-4" style="border-bottom-color: #eeeeee !important;">
+            <h3 class="fw-bold text-dark mb-0" style="font-family: 'Fraunces', Georgia, serif; font-size: 1.5rem;">@Model.Subject</h3>
+            <div class="d-flex gap-2 align-items-center">
+                @if (Model.Status == "Open")
+                {
+                    <span class="badge-status-open">Open</span>
+                }
+                else if (Model.Status == "Resolved")
+                {
+                    <span class="badge-status-resolved">Resolved</span>
+                }
+                else if (Model.Status == "In Progress")
+                {
+                    <span class="badge-status-progress">In Progress</span>
+                }
+                else
+                {
+                    <span class="badge-status-default">@Model.Status</span>
+                }
+
+                @if (Model.Priority == "High")
+                {
+                    <span class="badge-priority-high">High</span>
+                }
+                else if (Model.Priority == "Low")
+                {
+                    <span class="badge-priority-low">Low</span>
+                }
+                else
+                {
+                    <span class="badge-priority-medium">Medium</span>
+                }
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Left Side: Description -->
+            <div class="col-md-8">
+                <span class="text-secondary small text-uppercase d-block mb-2" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.05rem;">Description</span>
+                <div class="text-dark bg-white p-3 border" style="white-space: pre-wrap; min-height: 150px; font-size: 0.95rem; line-height: 1.6; border-color: #dddddd !important;">@Model.Description</div>
+            </div>
+
+            <!-- Right Side: Details Metadata -->
+            <div class="col-md-4 border-start ps-md-4" style="border-color: #dddddd !important;">
+                <div class="mb-4">
+                    <span class="text-secondary small text-uppercase d-block mb-1" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.05rem;">Customer</span>
+                    <div class="fw-bold text-dark fs-5">@(Model.Customer?.Name ?? "Unknown")</div>
+                    <div class="text-muted small">@(Model.Customer?.Email ?? "")</div>
+                </div>
+
+                <div class="mb-4">
+                    <span class="text-secondary small text-uppercase d-block mb-1" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.05rem;">Assigned Agent</span>
+                    @if (string.IsNullOrEmpty(Model.AssignedAgent))
+                    {
+                        <span class="badge-status-progress">Unassigned</span>
+                    }
+                    else
+                    {
+                        <span class="text-dark fw-bold">@Model.AssignedAgent</span>
+                    }
+                </div>
+
+                <div class="mb-4">
+                    <span class="text-secondary small text-uppercase d-block mb-1" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.05rem;">Created At</span>
+                    <div class="text-dark fw-semibold">@Model.CreatedAt.ToString("MMM dd, yyyy hh:mm tt")</div>
+                </div>
+
+                @if (Model.UpdatedAt.HasValue)
+                {
+                    <div>
+                        <span class="text-secondary small text-uppercase d-block mb-1" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.05rem;">Last Updated</span>
+                        <div class="text-dark fw-semibold">@Model.UpdatedAt.Value.ToString("MMM dd, yyyy hh:mm tt")</div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="d-flex justify-content-between align-items-center mt-5 pt-3 border-top" style="border-top-color: #eeeeee !important;">
+            <div>
+                @if (Model.Status == "Open")
+                {
+                    <form asp-action="UpdateStatus" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="status" value="In Progress" />
+                        <button type="submit" class="brutalist-btn brutalist-btn-primary" style="height: 2.4rem; font-size: 0.85rem; padding: 0 1.25rem;">
+                            Start Work
+                        </button>
+                    </form>
+                }
+                else if (Model.Status == "In Progress")
+                {
+                    <form asp-action="UpdateStatus" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="status" value="Resolved" />
+                        <button type="submit" class="brutalist-btn brutalist-btn-primary" style="height: 2.4rem; font-size: 0.85rem; padding: 0 1.25rem;">
+                            Mark Resolved
+                        </button>
+                    </form>
+                }
+            </div>
+
+            <div class="d-flex gap-3 align-items-center">
+                <a asp-action="Index" class="action-link">Back to List</a>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="brutalist-btn brutalist-btn-primary text-decoration-none">Edit Ticket</a>
+            </div>
+        </div>
+    </div>
 </div>

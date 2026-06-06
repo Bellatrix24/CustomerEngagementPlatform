@@ -2,97 +2,357 @@
 
 @{
     ViewData["Title"] = "Tickets";
+    ViewData["HideNavbar"] = true;
 
     var selectedSearch = Context.Request.Query["searchString"].ToString();
     var selectedStatus = Context.Request.Query["statusFilter"].ToString();
     var selectedPriority = Context.Request.Query["priorityFilter"].ToString();
 }
 
-<h1>Tickets</h1>
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Archivo:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 
-<form asp-action="Index" method="get" class="mb-3">
+    .portal-wrapper {
+        font-family: 'Archivo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: #111111;
+        background-color: #fafafa;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+    }
 
-    <div class="row">
+    .brutalist-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.8rem;
+        padding: 0 1.5rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 0 !important;
+        transition: all 0.15s ease-in-out;
+        text-align: center;
+        box-sizing: border-box;
+        border: none;
+    }
 
-        <div class="col-md-4">
-            <input type="text"
-                   name="searchString"
-                   value="@selectedSearch"
-                   class="form-control"
-                   placeholder="Search tickets..." />
+    .brutalist-btn-primary {
+        background-color: #111111;
+        color: #ffffff;
+        border: 2px solid #111111;
+    }
+
+    .brutalist-btn-primary:hover {
+        background-color: #333333;
+        border-color: #333333;
+        color: #ffffff;
+    }
+
+    .brutalist-btn-outline {
+        background-color: #ffffff;
+        color: #111111;
+        border: 1px solid #cccccc;
+        font-size: 0.85rem;
+        font-weight: 500;
+        height: 2.8rem;
+        padding: 0 1.5rem;
+    }
+
+    .brutalist-btn-outline:hover {
+        border-color: #111111;
+        background-color: #f9f9f9;
+        color: #111111;
+    }
+
+    .brutalist-card {
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 0 !important;
+        padding: 2rem;
+        box-shadow: none !important;
+    }
+
+    .form-control, .form-select {
+        border-radius: 0 !important;
+        border: 1px solid #cccccc;
+        color: #111111;
+        padding: 0.75rem;
+        height: 2.8rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #111111 !important;
+        box-shadow: none !important;
+    }
+
+    .brutalist-table-container {
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 0 !important;
+    }
+
+    .brutalist-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .brutalist-table th {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.05rem;
+        background-color: #fafafa;
+        border-bottom: 2px solid #111111;
+        color: #666666;
+        padding: 1rem;
+        text-align: left;
+    }
+
+    .brutalist-table td {
+        padding: 1.25rem 1rem;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .brutalist-table tbody tr:hover {
+        background-color: #fcfcfc;
+    }
+
+    .action-link {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #111111;
+        text-decoration: underline;
+        transition: color 0.15s ease;
+    }
+
+    .action-link:hover {
+        color: #0044cc;
+    }
+
+    .action-link-danger {
+        color: #9b1c1c;
+    }
+
+    .action-link-danger:hover {
+        color: #df2121;
+    }
+
+    /* Muted Premium Badge Colors */
+    .badge-priority-high {
+        display: inline-block;
+        background-color: #fdf2f2 !important;
+        color: #9b1c1c !important;
+        border: 1px solid #f8b4b4 !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-priority-medium {
+        display: inline-block;
+        background-color: #fffaf0 !important;
+        color: #b45309 !important;
+        border: 1px solid #fbd38d !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-priority-low {
+        display: inline-block;
+        background-color: #f3f4f6 !important;
+        color: #4b5563 !important;
+        border: 1px solid #d1d5db !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-status-open {
+        display: inline-block;
+        background-color: #f0f9ff !important;
+        color: #0369a1 !important;
+        border: 1px solid #bae6fd !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-status-progress {
+        display: inline-block;
+        background-color: #fffbeb !important;
+        color: #b45309 !important;
+        border: 1px solid #fde68a !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-status-resolved {
+        display: inline-block;
+        background-color: #f0fdf4 !important;
+        color: #166534 !important;
+        border: 1px solid #bbf7d0 !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-status-default {
+        display: inline-block;
+        background-color: #f3f4f6 !important;
+        color: #374151 !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+</style>
+
+<div class="portal-wrapper">
+    <!-- Header/Back Navigation -->
+    <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <a href="/" class="text-decoration-none d-inline-flex align-items-center fw-medium" style="font-size: 0.95rem; color: #111111;">
+            ← Home
+        </a>
+        <div class="d-flex align-items-center gap-3 text-muted small flex-wrap">
+            <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-underline text-muted fw-medium" style="font-size: 0.9rem;">Dashboard</a>
+            <span class="text-muted">|</span>
+            <a asp-controller="Customers" asp-action="Index" class="text-decoration-underline text-muted fw-medium" style="font-size: 0.9rem;">Customers</a>
+            <span class="text-muted">|</span>
+            <span>Logged in as <strong>@User.Identity?.Name</strong></span>
+            <span class="text-muted">|</span>
+            <form class="d-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                <button type="submit" class="btn btn-link text-muted p-0 align-baseline text-decoration-underline small" style="font-size: 0.85rem;">Logout</button>
+            </form>
         </div>
-
-        <div class="col-md-3">
-            <select name="statusFilter" class="form-control">
-                <option value="" selected="@(selectedStatus == "")">All Status</option>
-                <option value="Open" selected="@(selectedStatus == "Open")">Open</option>
-                <option value="In Progress" selected="@(selectedStatus == "In Progress")">In Progress</option>
-                <option value="Resolved" selected="@(selectedStatus == "Resolved")">Resolved</option>
-                <option value="Closed" selected="@(selectedStatus == "Closed")">Closed</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <select name="priorityFilter" class="form-control">
-                <option value="" selected="@(selectedPriority == "")">All Priority</option>
-                <option value="Low" selected="@(selectedPriority == "Low")">Low</option>
-                <option value="Medium" selected="@(selectedPriority == "Medium")">Medium</option>
-                <option value="High" selected="@(selectedPriority == "High")">High</option>
-            </select>
-        </div>
-
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-primary">
-                Filter
-            </button>
-        </div>
-
     </div>
 
-</form>
+    <!-- Title and Action -->
+    <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-3 pb-4 border-bottom" style="border-bottom-color: #dddddd !important;">
+        <div>
+            <div class="text-uppercase tracking-wider text-muted mb-1" style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05rem;">Staff Access</div>
+            <h1 class="display-6 mb-2" style="font-family: 'Fraunces', Georgia, serif; font-weight: 300; color: #111111; letter-spacing: -0.05rem;">Tickets</h1>
+            <p class="text-muted mb-0" style="font-size: 1.05rem;">Review, filter, assign, and manage customer support tickets.</p>
+        </div>
+        <div>
+            <a asp-action="Create" class="brutalist-btn brutalist-btn-primary px-4">
+                Create New Ticket
+            </a>
+        </div>
+    </div>
 
-<p>
-    <a asp-action="Create" class="btn btn-success">
-        Create New Ticket
-    </a>
+    <!-- Search and Filter Panel -->
+    <div class="brutalist-card mb-5">
+        <form asp-action="Index" method="get" class="row g-3">
+            <div class="col-md-4">
+                <input type="text"
+                       name="searchString"
+                       value="@selectedSearch"
+                       class="form-control"
+                       placeholder="Search tickets..." />
+            </div>
 
-    <a asp-action="Index" class="btn btn-secondary ms-2">
-        Clear
-    </a>
-</p>
+            <div class="col-md-3">
+                <select name="statusFilter" class="form-select">
+                    <option value="" selected="@(selectedStatus == "")">All Status</option>
+                    <option value="Open" selected="@(selectedStatus == "Open")">Open</option>
+                    <option value="In Progress" selected="@(selectedStatus == "In Progress")">In Progress</option>
+                    <option value="Resolved" selected="@(selectedStatus == "Resolved")">Resolved</option>
+                    <option value="Closed" selected="@(selectedStatus == "Closed")">Closed</option>
+                </select>
+            </div>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Subject</th>
-            <th>Status</th>
-            <th>Priority</th>
-            <th>Assigned Agent</th>
-            <th>Customer</th>
-            <th>Created At</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
+            <div class="col-md-3">
+                <select name="priorityFilter" class="form-select">
+                    <option value="" selected="@(selectedPriority == "")">All Priority</option>
+                    <option value="Low" selected="@(selectedPriority == "Low")">Low</option>
+                    <option value="Medium" selected="@(selectedPriority == "Medium")">Medium</option>
+                    <option value="High" selected="@(selectedPriority == "High")">High</option>
+                </select>
+            </div>
 
-    <tbody>
+            <div class="col-md-2 d-flex gap-2">
+                <button type="submit" class="brutalist-btn brutalist-btn-primary w-100" style="height: auto;">
+                    Filter
+                </button>
+                <a asp-action="Index" class="brutalist-btn brutalist-btn-outline d-inline-flex align-items-center justify-content-center text-decoration-none">
+                    Clear
+                </a>
+            </div>
+        </form>
+    </div>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Subject</td>
-                <td>@item.Status</td>
-                <td>@item.Priority</td>
-                <td>@item.AssignedAgent</td>
-                <td>@item.Customer?.Name</td>
-                <td>@item.CreatedAt.ToString("MM/dd/yyyy")</td>
+    <!-- Table Container -->
+    <div id="ticketTableContainer">
+        <partial name="_TicketTable" model="Model" />
+    </div>
+</div>
 
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Intercept form submission
+            $('form').submit(function (e) {
+                e.preventDefault(); // Prevent normal postback
+                
+                var form = $(this);
+                var url = form.attr('action') || window.location.href;
+                var formData = form.serialize();
 
-    </tbody>
-</table>
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: formData,
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    },
+                    success: function (result) {
+                        $('#ticketTableContainer').html(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("AJAX Error: ", error);
+                    }
+                });
+            });
+
+            // Automatically trigger filter on dropdown change
+            $('select[name="statusFilter"], select[name="priorityFilter"]').change(function () {
+                $('form').submit();
+            });
+
+            // Automatically trigger filter on search input typing (debounced at 300ms)
+            var typingTimer;
+            var doneTypingInterval = 300;
+            $('input[name="searchString"]').on('input', function () {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(function() {
+                    $('form').submit();
+                }, doneTypingInterval);
+            });
+        });
+    </script>
+}

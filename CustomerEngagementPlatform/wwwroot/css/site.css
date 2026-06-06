@@ -19,4 +19,95 @@ html {
 
 body {
   margin-bottom: 60px;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f8fafc;
+}
+
+/* Custom Gradients */
+.hero-gradient {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+/* Interactive Portal Cards */
+.portal-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  background: #ffffff;
+}
+
+.portal-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08) !important;
+}
+
+.card-customer {
+  border-top: 5px solid #0d6efd !important;
+}
+
+.card-staff {
+  border-top: 5px solid #6f42c1 !important;
+}
+
+/* Dashboard & Feature Card Hover Effect */
+.transition-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.transition-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Style Pre Wrap for Textarea details */
+.style-pre-wrap {
+  white-space: pre-wrap;
+}
+
+/* Text tracker colors */
+.bg-purple-subtle {
+  background-color: #f3ebfc;
+}
+
+.text-purple {
+  color: #6f42c1;
+}
+
+/* Typography styles */
+.fs-7 {
+  font-size: 0.8rem;
+}
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+
+/* Navbar polish */
+.navbar {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #1e3c72 !important;
+}
+.nav-link {
+  font-weight: 500;
+}
+
+/* Login Page Gradient Backgrounds */
+.bg-primary-gradient {
+  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+}
+
+.bg-purple-gradient {
+  background: linear-gradient(135deg, #6f42c1 0%, #522790 100%);
+}
+
+.bg-light-purple {
+  background-color: #f6f0fd;
+  border: 1px solid #e8dbf9 !important;
+}
+
+.text-secondary-dark {
+  color: #495057;
 }

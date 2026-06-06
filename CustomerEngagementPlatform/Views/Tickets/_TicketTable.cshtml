@@ -1,0 +1,81 @@
+@model IEnumerable<CustomerEngagementPlatform.Models.Ticket>
+
+<div class="brutalist-table-container table-responsive">
+    <table class="table brutalist-table align-middle mb-0">
+        <thead>
+            <tr>
+                <th style="width: 25%;">Subject</th>
+                <th style="width: 12%;">Status</th>
+                <th style="width: 12%;">Priority</th>
+                <th style="width: 16%;">Assigned Agent</th>
+                <th style="width: 15%;">Customer</th>
+                <th style="width: 10%;">Created At</th>
+                <th style="width: 10%; text-align: right;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="fw-bold text-dark">
+                        @item.Subject
+                        <div class="text-muted small">#@item.Id</div>
+                    </td>
+                    <td>
+                        @if (item.Status == "Open")
+                        {
+                            <span class="badge-status-open">Open</span>
+                        }
+                        else if (item.Status == "Resolved")
+                        {
+                            <span class="badge-status-resolved">Resolved</span>
+                        }
+                        else if (item.Status == "In Progress")
+                        {
+                            <span class="badge-status-progress">In Progress</span>
+                        }
+                        else
+                        {
+                            <span class="badge-status-default">@item.Status</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.Priority == "High")
+                        {
+                            <span class="badge-priority-high">High</span>
+                        }
+                        else if (item.Priority == "Low")
+                        {
+                            <span class="badge-priority-low">Low</span>
+                        }
+                        else
+                        {
+                            <span class="badge-priority-medium">Medium</span>
+                        }
+                    </td>
+                    <td class="fw-medium text-secondary">
+                        @if (string.IsNullOrEmpty(item.AssignedAgent))
+                        {
+                            <span class="badge-status-progress" style="font-size: 0.75rem;">Unassigned</span>
+                        }
+                        else
+                        {
+                            @item.AssignedAgent
+                        }
+                    </td>
+                    <td>@(item.Customer?.Name ?? "Unknown")</td>
+                    <td>@item.CreatedAt.ToString("MM/dd/yyyy")</td>
+                    <td class="text-end">
+                        <div class="d-inline-flex gap-2">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="action-link">Edit</a>
+                            <span class="text-muted">|</span>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="action-link">Details</a>
+                            <span class="text-muted">|</span>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="action-link action-link-danger">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

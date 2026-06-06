@@ -1,0 +1,566 @@
+@model CustomerEngagementPlatform.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Staff Dashboard";
+    ViewData["HideNavbar"] = true;
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Archivo:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+    .portal-wrapper {
+        font-family: 'Archivo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: #111111;
+        background-color: #fafafa;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+    }
+
+    .brutalist-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.8rem;
+        padding: 0 1.5rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 0 !important;
+        transition: all 0.15s ease-in-out;
+        text-align: center;
+        box-sizing: border-box;
+        border: none;
+    }
+
+    .brutalist-btn-primary {
+        background-color: #111111;
+        color: #ffffff;
+        border: 2px solid #111111;
+    }
+
+    .brutalist-btn-primary:hover {
+        background-color: #333333;
+        border-color: #333333;
+        color: #ffffff;
+    }
+
+    .brutalist-btn-outline {
+        background-color: #ffffff;
+        color: #111111;
+        border: 1px solid #cccccc;
+        font-size: 0.85rem;
+        font-weight: 500;
+        height: 2.2rem;
+        padding: 0 1rem;
+    }
+
+    .brutalist-btn-outline:hover {
+        border-color: #111111;
+        background-color: #f9f9f9;
+        color: #111111;
+    }
+
+    .brutalist-btn-sm {
+        font-size: 0.8rem;
+        height: 2rem;
+        padding: 0 0.8rem;
+    }
+
+    .brutalist-card {
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 0 !important;
+        padding: 2rem;
+        box-shadow: none !important;
+        transition: border-color 0.2s ease;
+    }
+    .brutalist-card:hover {
+        border-color: #111111;
+    }
+
+    .brutalist-card-container {
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 0 !important;
+        padding: 2.5rem;
+    }
+
+    .brutalist-table-container {
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 0 !important;
+    }
+
+    .brutalist-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .brutalist-table th {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.05rem;
+        background-color: #fafafa;
+        border-bottom: 2px solid #111111;
+        color: #666666;
+        padding: 1rem;
+        text-align: left;
+    }
+
+    .brutalist-table td {
+        padding: 1.25rem 1rem;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .brutalist-table tbody tr:hover {
+        background-color: #fcfcfc;
+    }
+
+    /* Muted Premium Badge Colors */
+    .badge-priority-high {
+        display: inline-block;
+        background-color: #fdf2f2 !important;
+        color: #9b1c1c !important;
+        border: 1px solid #f8b4b4 !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-priority-medium {
+        display: inline-block;
+        background-color: #fffaf0 !important;
+        color: #b45309 !important;
+        border: 1px solid #fbd38d !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-priority-low {
+        display: inline-block;
+        background-color: #f3f4f6 !important;
+        color: #4b5563 !important;
+        border: 1px solid #d1d5db !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-status-open {
+        display: inline-block;
+        background-color: #f0f9ff !important;
+        color: #0369a1 !important;
+        border: 1px solid #bae6fd !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-status-progress {
+        display: inline-block;
+        background-color: #fffbeb !important;
+        color: #b45309 !important;
+        border: 1px solid #fde68a !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-status-resolved {
+        display: inline-block;
+        background-color: #f0fdf4 !important;
+        color: #166534 !important;
+        border: 1px solid #bbf7d0 !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+
+    .badge-status-default {
+        display: inline-block;
+        background-color: #f3f4f6 !important;
+        color: #374151 !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 0 !important;
+        font-weight: 600;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02rem;
+    }
+</style>
+
+<div class="portal-wrapper">
+    <!-- Header/Back Navigation -->
+    <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <a href="/" class="text-decoration-none d-inline-flex align-items-center fw-medium" style="font-size: 0.95rem; color: #111111;">
+            ← Home
+        </a>
+        <div class="d-flex align-items-center gap-3 text-muted small flex-wrap">
+            <a asp-controller="Customers" asp-action="Index" class="text-decoration-underline text-muted fw-medium" style="font-size: 0.9rem;">Customers</a>
+            <span class="text-muted">|</span>
+            <a asp-controller="Tickets" asp-action="Index" class="text-decoration-underline text-muted fw-medium" style="font-size: 0.9rem;">Tickets</a>
+            <span class="text-muted">|</span>
+            <span>Logged in as <strong>@User.Identity?.Name</strong></span>
+            <span class="text-muted">|</span>
+            <form class="d-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                <button type="submit" class="btn btn-link text-muted p-0 align-baseline text-decoration-underline small" style="font-size: 0.85rem;">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Title and Action -->
+    <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-3 pb-4 border-bottom" style="border-bottom-color: #dddddd !important;">
+        <div>
+            <div class="text-uppercase tracking-wider text-muted mb-1" style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05rem;">Staff Dashboard</div>
+            <h1 class="display-6 mb-2" style="font-family: 'Fraunces', Georgia, serif; font-weight: 300; color: #111111; letter-spacing: -0.05rem;">Staff Engagement Dashboard</h1>
+            <p class="text-muted mb-0" style="font-size: 1.05rem;">Overview of customer satisfaction metrics and support operations.</p>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row row-cols-1 row-cols-md-5 g-4 mb-5">
+        <!-- Customers -->
+        <div class="col">
+            <a asp-controller="Customers" asp-action="Index" class="text-decoration-none text-dark d-block h-100">
+                <div class="brutalist-card h-100">
+                    <div class="text-secondary mb-2 small text-uppercase fw-semibold" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.03rem;">Total Customers</div>
+                    <h2 class="display-6 fw-bold mb-0" id="totalCustomers" style="color: #111111;">@Model.TotalCustomers</h2>
+                </div>
+            </a>
+        </div>
+
+        <!-- Total Tickets -->
+        <div class="col">
+            <a asp-controller="Tickets" asp-action="Index" class="text-decoration-none text-dark d-block h-100">
+                <div class="brutalist-card h-100">
+                    <div class="text-secondary mb-2 small text-uppercase fw-semibold" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.03rem;">Total Tickets</div>
+                    <h2 class="display-6 fw-bold mb-0" id="totalTickets" style="color: #111111;">@Model.TotalTickets</h2>
+                </div>
+            </a>
+        </div>
+
+        <!-- Open Tickets -->
+        <div class="col">
+            <a asp-controller="Tickets" asp-action="Index" asp-route-statusFilter="Open" class="text-decoration-none text-dark d-block h-100">
+                <div class="brutalist-card h-100">
+                    <div class="text-secondary mb-2 small text-uppercase fw-semibold" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.03rem;">Open Tickets</div>
+                    <h2 class="display-6 fw-bold mb-0" id="openTickets" style="color: #b45309;">@Model.OpenTickets</h2>
+                </div>
+            </a>
+        </div>
+
+        <!-- Resolved Tickets -->
+        <div class="col">
+            <a asp-controller="Tickets" asp-action="Index" asp-route-statusFilter="Resolved" class="text-decoration-none text-dark d-block h-100">
+                <div class="brutalist-card h-100">
+                    <div class="text-secondary mb-2 small text-uppercase fw-semibold" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.03rem;">Resolved Tickets</div>
+                    <h2 class="display-6 fw-bold mb-0" id="resolvedTickets" style="color: #166534;">@Model.ResolvedTickets</h2>
+                </div>
+            </a>
+        </div>
+
+        <!-- Unassigned Tickets -->
+        <div class="col">
+            <a asp-controller="Tickets" asp-action="Index" class="text-decoration-none text-dark d-block h-100">
+                <div class="brutalist-card h-100">
+                    <div class="text-secondary mb-2 small text-uppercase fw-semibold" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.03rem;">Unassigned</div>
+                    <h2 class="display-6 fw-bold mb-0" id="unassignedTickets" style="color: #9b1c1c;">@Model.UnassignedTickets</h2>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Analytics Sections -->
+    <div class="row g-4">
+        <!-- Left Column -->
+        <div class="col-lg-8">
+            <!-- Tickets Needing Assignment -->
+            <div class="brutalist-card-container mb-5">
+                <div class="mb-4">
+                    <h3 class="fw-bold text-dark mb-1" style="font-family: 'Fraunces', Georgia, serif; font-size: 1.5rem;">Tickets Needing Assignment</h3>
+                </div>
+                
+                @if (!Model.UnassignedTicketsList.Any())
+                {
+                    <div class="text-center py-5 border" style="border-color: #eeeeee !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-check-circle text-success mb-3" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                        </svg>
+                        <p class="text-secondary fw-semibold mb-0">All tickets have been assigned.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="brutalist-table-container table-responsive">
+                        <table class="table brutalist-table align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%;">Subject</th>
+                                    <th style="width: 25%;">Customer</th>
+                                    <th style="width: 15%;">Priority</th>
+                                    <th style="width: 18%;">Created At</th>
+                                    <th style="width: 12%; text-align: right;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ticket in Model.UnassignedTicketsList)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a asp-controller="Tickets" asp-action="Details" asp-route-id="@ticket.Id" class="text-decoration-none fw-bold text-dark text-truncate d-block" style="max-width: 200px;">
+                                                @ticket.Subject
+                                            </a>
+                                            <span class="text-muted small">#@ticket.Id</span>
+                                        </td>
+                                        <td>
+                                            <div class="fw-semibold text-secondary">@(ticket.Customer?.Name ?? "Unknown")</div>
+                                            <div class="text-muted small">@(ticket.Customer?.Email ?? "")</div>
+                                        </td>
+                                        <td>
+                                            @if (ticket.Priority == "High")
+                                            {
+                                                <span class="badge-priority-high">High</span>
+                                            }
+                                            else if (ticket.Priority == "Low")
+                                            {
+                                                <span class="badge-priority-low">Low</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge-priority-medium">Medium</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="text-dark small">@ticket.CreatedAt.ToString("MMM dd, yyyy")</div>
+                                            <div class="text-muted small" style="font-size: 0.75rem;">@ticket.CreatedAt.ToString("hh:mm tt")</div>
+                                        </td>
+                                        <td class="text-end">
+                                            <a asp-controller="Tickets" asp-action="Edit" asp-route-id="@ticket.Id" class="brutalist-btn brutalist-btn-outline brutalist-btn-sm text-decoration-none">Assign</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+
+            <!-- Recent Tickets -->
+            <div class="brutalist-card-container">
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                    <h3 class="fw-bold text-dark mb-0" style="font-family: 'Fraunces', Georgia, serif; font-size: 1.5rem;">Recent Tickets</h3>
+                    <a asp-controller="Tickets" asp-action="Index" class="brutalist-btn brutalist-btn-outline">View All</a>
+                </div>
+                
+                @if (!Model.RecentTickets.Any())
+                {
+                    <div class="text-center py-5 border" style="border-color: #eeeeee !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-inbox text-muted mb-3" viewBox="0 0 16 16">
+                            <path d="M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4zm9.917 5H10.5a2.5 2.5 0 0 1-5 0H1.103l.512 2.549A.5.5 0 0 0 2.107 12h11.786a.5.5 0 0 0 .492-.41l.512-2.54zM14 13H2a1 1 0 0 1-1-1v-.075l.56-2.8A1 1 0 0 1 2.532 9h10.936a1 1 0 0 1 .972.725l.56 2.8A1 1 0 0 1 14 12v1zm-4.5-9.5A.5.5 0 0 1 10 3h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"/>
+                        </svg>
+                        <p class="text-secondary fw-semibold">No recent activity found.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="brutalist-table-container table-responsive">
+                        <table class="table brutalist-table align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th style="width: 32%;">Ticket</th>
+                                    <th style="width: 25%;">Customer</th>
+                                    <th style="width: 18%;">Submitted</th>
+                                    <th style="width: 13%;">Priority</th>
+                                    <th style="width: 12%;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ticket in Model.RecentTickets)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a asp-controller="Tickets" asp-action="Details" asp-route-id="@ticket.Id" class="text-decoration-none fw-bold text-dark text-truncate d-block" style="max-width: 200px;">
+                                                @ticket.Subject
+                                            </a>
+                                            <span class="text-muted small">#@ticket.Id</span>
+                                        </td>
+                                        <td>
+                                            <div class="fw-semibold text-secondary">@(ticket.Customer?.Name ?? "Unknown")</div>
+                                            <div class="text-muted small">@(ticket.Customer?.Email ?? "")</div>
+                                        </td>
+                                        <td>
+                                            <div class="text-dark small">@ticket.CreatedAt.ToString("MMM dd, yyyy")</div>
+                                            <div class="text-muted small" style="font-size: 0.75rem;">@ticket.CreatedAt.ToString("hh:mm tt")</div>
+                                        </td>
+                                        <td>
+                                            @if (ticket.Priority == "High")
+                                            {
+                                                <span class="badge-priority-high">High</span>
+                                            }
+                                            else if (ticket.Priority == "Low")
+                                            {
+                                                <span class="badge-priority-low">Low</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge-priority-medium">Medium</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (ticket.Status == "Open")
+                                            {
+                                                <span class="badge-status-open">Open</span>
+                                            }
+                                            else if (ticket.Status == "Resolved")
+                                            {
+                                                <span class="badge-status-resolved">Resolved</span>
+                                            }
+                                            else if (ticket.Status == "In Progress")
+                                            {
+                                                <span class="badge-status-progress">In Progress</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge-status-default">@ticket.Status</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Right Column (Analytics Side Panel) -->
+        <div class="col-lg-4">
+            <!-- Quick Actions -->
+            <div class="brutalist-card mb-4">
+                <h5 class="fw-bold text-dark mb-4" style="font-family: 'Fraunces', Georgia, serif; font-size: 1.3rem;">Quick Actions</h5>
+                <div class="d-flex flex-column gap-2">
+                    <a asp-controller="Customers" asp-action="Create" class="brutalist-btn brutalist-btn-outline w-100 justify-content-start gap-2 text-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                            <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                            <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+                        </svg>
+                        Add New Customer
+                    </a>
+                    <a asp-controller="Tickets" asp-action="Create" class="brutalist-btn brutalist-btn-outline w-100 justify-content-start gap-2 text-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                        </svg>
+                        Create New Ticket
+                    </a>
+                </div>
+            </div>
+
+            <!-- Service Efficiency -->
+            <div class="brutalist-card mb-4">
+                <h5 class="fw-bold text-dark mb-4" style="font-family: 'Fraunces', Georgia, serif; font-size: 1.3rem;">Service Efficiency</h5>
+                <div class="text-center mb-4">
+                    <div class="display-5 fw-bold text-dark mb-1">@Model.ResolutionRate%</div>
+                    <div class="text-secondary small fw-semibold" style="font-family: 'JetBrains Mono', monospace; text-transform: uppercase;">Resolution Rate</div>
+                </div>
+                
+                <div class="progress mb-4" style="height: 6px; border-radius: 0; background-color: #eeeeee;">
+                    <div class="progress-bar" role="progressbar" style="width: @Model.ResolutionRate%; background-color: #111111;" aria-valuenow="@Model.ResolutionRate" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+
+                <div class="d-flex justify-content-between text-secondary small border-top pt-3" style="border-top-color: #eeeeee !important;">
+                    <span>Total Resolved:</span>
+                    <span class="fw-bold text-dark">@Model.ResolvedTickets</span>
+                </div>
+                <div class="d-flex justify-content-between text-secondary small mt-2">
+                    <span>Total Active:</span>
+                    <span class="fw-bold text-dark">@(Model.TotalTickets - Model.ResolvedTickets)</span>
+                </div>
+            </div>
+
+            <!-- Operational Breakdown -->
+            <div class="brutalist-card">
+                <h5 class="fw-bold text-dark mb-4" style="font-family: 'Fraunces', Georgia, serif; font-size: 1.3rem;">Operational Breakdown</h5>
+                
+                <!-- Status Breakdown -->
+                <h6 class="fw-bold text-secondary mb-3 small text-uppercase" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.05rem;">Tickets by Status</h6>
+                <div class="d-flex flex-column gap-2 mb-4">
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="border-bottom-color: #eeeeee !important;">
+                        <span class="small d-flex align-items-center"><span class="d-inline-block me-2" style="width: 8px; height: 8px; background-color: #0369a1;"></span>Open</span>
+                        <span class="badge bg-light text-dark border px-2.5 py-1" style="border-radius: 0 !important;">@Model.OpenTickets</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="border-bottom-color: #eeeeee !important;">
+                        <span class="small d-flex align-items-center"><span class="d-inline-block me-2" style="width: 8px; height: 8px; background-color: #b45309;"></span>In Progress</span>
+                        <span class="badge bg-light text-dark border px-2.5 py-1" style="border-radius: 0 !important;">@Model.InProgressTickets</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="border-bottom-color: #eeeeee !important;">
+                        <span class="small d-flex align-items-center"><span class="d-inline-block me-2" style="width: 8px; height: 8px; background-color: #166534;"></span>Resolved</span>
+                        <span class="badge bg-light text-dark border px-2.5 py-1" style="border-radius: 0 !important;">@Model.ResolvedTickets</span>
+                    </div>
+                </div>
+
+                <!-- Priority Breakdown -->
+                <h6 class="fw-bold text-secondary mb-3 small text-uppercase" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 0.05rem;">Tickets by Priority</h6>
+                <div class="d-flex flex-column gap-2">
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="border-bottom-color: #eeeeee !important;">
+                        <span class="small d-flex align-items-center"><span class="d-inline-block me-2" style="width: 8px; height: 8px; background-color: #9b1c1c;"></span>High Priority</span>
+                        <span class="badge bg-light text-dark border px-2.5 py-1" style="border-radius: 0 !important;">@Model.HighPriorityTickets</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="border-bottom-color: #eeeeee !important;">
+                        <span class="small d-flex align-items-center"><span class="d-inline-block me-2" style="width: 8px; height: 8px; background-color: #b45309;"></span>Medium Priority</span>
+                        <span class="badge bg-light text-dark border px-2.5 py-1" style="border-radius: 0 !important;">@Model.MediumPriorityTickets</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="border-bottom-color: #eeeeee !important;">
+                        <span class="small d-flex align-items-center"><span class="d-inline-block me-2" style="width: 8px; height: 8px; background-color: #4b5563;"></span>Low Priority</span>
+                        <span class="badge bg-light text-dark border px-2.5 py-1" style="border-radius: 0 !important;">@Model.LowPriorityTickets</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        fetch('/Dashboard/GetDashboardStats')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('totalCustomers').innerText = data.totalCustomers;
+                document.getElementById('totalTickets').innerText = data.totalTickets;
+                document.getElementById('openTickets').innerText = data.openTickets;
+                document.getElementById('resolvedTickets').innerText = data.resolvedTickets;
+                if (document.getElementById('unassignedTickets')) {
+                    document.getElementById('unassignedTickets').innerText = data.unassignedTickets;
+                }
+
+                console.log("Dashboard stats loaded using AJAX");
+            })
+            .catch(error => {
+                console.log("Dashboard AJAX error", error);
+            });
+    </script>
+}

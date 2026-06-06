@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CustomerEngagementPlatform.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Staff")]
     public class TicketsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -40,7 +40,12 @@ namespace CustomerEngagementPlatform.Controllers
                 tickets = tickets.Where(t => t.Priority == priorityFilter);
             }
 
-            return View(await tickets.ToListAsync());
+            var resultList = await tickets.ToListAsync();
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return PartialView("_TicketTable", resultList);
+            }
+            return View(resultList);
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -171,6 +176,27 @@ namespace CustomerEngagementPlatform.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateStatus(int id, string status)
+        {
+            var ticket = await _context.Tickets.FindAsync(id);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            if (status == "Open" || status == "In Progress" || status == "Resolved" || status == "Closed")
+            {
+                ticket.Status = status;
+                ticket.UpdatedAt = DateTime.Now;
+                _context.Update(ticket);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Details), new { id = id });
         }
 
         private bool TicketExists(int? id)

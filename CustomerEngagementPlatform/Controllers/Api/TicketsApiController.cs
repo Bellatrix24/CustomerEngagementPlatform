@@ -1,11 +1,13 @@
-﻿using CustomerEngagementPlatform.Services;
+using CustomerEngagementPlatform.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 namespace CustomerEngagementPlatform.Controllers.Api
 {
     [Route("api/tickets")]
     [ApiController]
-    [Authorize(Roles = "SupportAgent")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Staff")]
     public class TicketsApiController : ControllerBase
     {
         private readonly ITicketService _ticketService;

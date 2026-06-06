@@ -1,0 +1,142 @@
+@page
+@model CustomerEngagementPlatform.Areas.Identity.Pages.Account.LoginModel
+
+@{
+    var isStaff = Model.Portal?.Equals("staff", StringComparison.OrdinalIgnoreCase) ?? false;
+    ViewData["Title"] = isStaff ? "Staff Login" : "Customer Login";
+    ViewData["HideNavbar"] = true;
+}
+
+<style>
+    .brutalist-container {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .brutalist-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 3rem;
+        font-size: 1rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 0 !important;
+        transition: all 0.15s ease-in-out;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    .brutalist-btn-primary {
+        background-color: #111111;
+        color: #ffffff;
+        border: 2px solid #111111;
+    }
+    .brutalist-btn-primary:hover {
+        background-color: #0044cc;
+        border-color: #0044cc;
+        color: #ffffff;
+    }
+    .form-control:focus {
+        border-color: #111111 !important;
+        box-shadow: none !important;
+    }
+    .form-check-input:checked {
+        background-color: #111111 !important;
+        border-color: #111111 !important;
+    }
+    .form-check-input:focus {
+        box-shadow: none !important;
+        border-color: #111111 !important;
+    }
+</style>
+
+<div class="container brutalist-container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <!-- Back Navigation -->
+            <div class="mb-4">
+                <a href="/" class="text-decoration-none d-inline-flex align-items-center fw-medium" style="font-size: 0.95rem; color: #111111;">
+                    ← Back
+                </a>
+            </div>
+
+            <!-- Card Wrapper -->
+            <div class="card p-2" style="border: 2px solid #111111; border-radius: 0 !important; box-shadow: none !important; background-color: #ffffff;">
+                <!-- Header -->
+                <div class="card-header bg-white py-4" style="border-bottom: 2px solid #111111; border-radius: 0 !important;">
+                    <h4 class="mb-1" style="font-weight: 300; letter-spacing: -0.02rem; color: #111111;">@ViewData["Title"]</h4>
+                    <p class="text-muted mb-0 small">Please enter your credentials to log in.</p>
+                </div>
+                
+                <!-- Body -->
+                <div class="card-body p-4">
+                    <form id="account" method="post" asp-route-returnUrl="@Model.ReturnUrl" asp-route-portal="@Model.Portal">
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label asp-for="Input.Email" class="form-label fw-medium" style="color: #111111;">Email Address</label>
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" style="border-radius: 0 !important; border: 1px solid #cccccc; color: #111111;" />
+                            <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label asp-for="Input.Password" class="form-label fw-medium" style="color: #111111;">Password</label>
+                            <input asp-for="Input.Password" type="password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="••••••••" style="border-radius: 0 !important; border: 1px solid #cccccc; color: #111111;" />
+                            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Remember Me -->
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" asp-for="Input.RememberMe" style="border-radius: 0 !important; border: 1px solid #cccccc;" />
+                            <label class="form-check-label text-muted small" asp-for="Input.RememberMe">
+                                Remember me?
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button id="login-submit" type="submit" class="w-100 brutalist-btn brutalist-btn-primary py-2 mb-3">
+                            Log In
+                        </button>
+
+                        <!-- Customer Specific Register Link -->
+                        @if (!isStaff)
+                        {
+                            <div class="text-center mt-2">
+                                <span class="text-muted small">Don't have an account? </span>
+                                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-underline small fw-semibold" style="color: #111111;">Register as Customer</a>
+                            </div>
+                        }
+                    </form>
+
+                    <!-- Staff Specific Demo Credentials Box -->
+                    @if (isStaff)
+                    {
+                        <div class="mt-4 pt-3" style="border-top: 1px solid #cccccc;">
+                            <div class="p-3" style="border: 1px solid #111111; border-radius: 0 !important; background-color: #fafafa; color: #111111;">
+                                <div class="d-flex align-items-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-info-circle-fill me-2" viewBox="0 0 16 16" style="color: #111111;">
+                                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2"/>
+                                    </svg>
+                                    <span class="fw-bold" style="color: #111111;">Demo Staff Account</span>
+                                </div>
+                                <div class="small mb-1" style="font-size: 0.9rem;">
+                                    <strong>Email:</strong> <a href="mailto:staff@demo.com" class="text-decoration-underline fw-semibold" style="color: #111111;">staff@demo.com</a>
+                                </div>
+                                <div class="small mb-2" style="font-size: 0.9rem;">
+                                    <strong>Password:</strong> <code class="bg-white px-2 py-0.5 border" style="color: #111111; border-radius: 0 !important; border-color: #111111 !important;">Staff@123</code>
+                                </div>
+                                <div class="x-small text-muted" style="font-size: 0.75rem;">
+                                    This is a demonstration account provided for evaluation purposes.
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

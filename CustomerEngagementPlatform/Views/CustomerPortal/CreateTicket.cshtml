@@ -1,0 +1,187 @@
+@model CustomerEngagementPlatform.ViewModels.CreateTicketViewModel
+
+@{
+    ViewData["Title"] = "Raise New Ticket";
+    ViewData["HideNavbar"] = true;
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Archivo:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+    .portal-wrapper {
+        font-family: 'Archivo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: #111111;
+        background-color: #fafafa;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+    }
+
+    .brutalist-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.8rem;
+        padding: 0 1.5rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 0 !important;
+        transition: all 0.15s ease-in-out;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .brutalist-btn-primary {
+        background-color: #111111;
+        color: #ffffff;
+        border: 2px solid #111111;
+    }
+
+    .brutalist-btn-primary:hover {
+        background-color: #333333;
+        border-color: #333333;
+        color: #ffffff;
+    }
+
+    .brutalist-btn-outline {
+        background-color: #ffffff;
+        color: #111111;
+        border: 1px solid #cccccc;
+        font-size: 0.95rem;
+        font-weight: 500;
+        height: 2.8rem;
+        padding: 0 1.5rem;
+    }
+
+    .brutalist-btn-outline:hover {
+        border-color: #111111;
+        background-color: #f9f9f9;
+        color: #111111;
+    }
+
+    .brutalist-card {
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 0 !important;
+        padding: 3rem;
+        box-shadow: none !important;
+    }
+
+    .form-control, .form-select {
+        border-radius: 0 !important;
+        border: 1px solid #cccccc;
+        color: #111111;
+        padding: 0.75rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #111111 !important;
+        box-shadow: none !important;
+    }
+
+    .form-control[readonly] {
+        background-color: #f5f5f5;
+        border-color: #e0e0e0;
+    }
+
+    .section-heading {
+        font-family: 'Fraunces', Georgia, serif;
+        font-size: 1.4rem;
+        font-weight: 400;
+        color: #111111;
+        border-bottom: 1px solid #111111;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+        margin-top: 1.5rem;
+    }
+</style>
+
+<div class="portal-wrapper">
+    <!-- Back Button -->
+    <div class="mb-4">
+        <a asp-action="Index" class="text-decoration-none d-inline-flex align-items-center gap-1 fw-medium" style="font-size: 0.95rem; color: #111111;">
+            ← Back to Portal
+        </a>
+    </div>
+
+    <!-- Title Header -->
+    <div class="mb-5 pb-4 border-bottom" style="border-bottom-color: #dddddd !important;">
+        <h1 class="display-6 mb-2" style="font-family: 'Fraunces', Georgia, serif; font-weight: 300; color: #111111; letter-spacing: -0.05rem;">Raise a Support Ticket</h1>
+        <p class="text-muted mb-0" style="font-size: 1.05rem;">Describe your issue and the support team will review it.</p>
+    </div>
+
+    <!-- Ticket Form Card -->
+    <div class="brutalist-card">
+        <form asp-action="CreateTicket" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="row g-4">
+                <div class="col-12">
+                    <h6 class="section-heading">1. Contact Information</h6>
+                </div>
+                
+                <!-- Customer Name -->
+                <div class="col-md-6">
+                    <label asp-for="Name" class="form-label fw-medium text-dark"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Enter your full name" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <!-- Phone -->
+                <div class="col-md-6">
+                    <label asp-for="Phone" class="form-label fw-medium text-dark"></label>
+                    <input asp-for="Phone" class="form-control" placeholder="e.g. +1 555-0199" />
+                    <span asp-validation-for="Phone" class="text-danger small"></span>
+                </div>
+
+                <!-- Email -->
+                <div class="col-12 mb-3">
+                    <label asp-for="Email" class="form-label fw-medium text-dark"></label>
+                    <input asp-for="Email" class="form-control" placeholder="name@example.com" readonly />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                    <div class="form-text text-muted" style="font-size: 0.85rem;">Ticket will be tracked using this logged-in account email.</div>
+                </div>
+
+                <div class="col-12">
+                    <h6 class="section-heading">2. Ticket Details</h6>
+                </div>
+
+                <!-- Subject -->
+                <div class="col-12">
+                    <label asp-for="Subject" class="form-label fw-medium text-dark"></label>
+                    <input asp-for="Subject" class="form-control" placeholder="Brief summary of the issue" />
+                    <span asp-validation-for="Subject" class="text-danger small"></span>
+                </div>
+
+                <!-- Priority -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Priority" class="form-label fw-medium text-dark"></label>
+                    <select asp-for="Priority" class="form-select">
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                    <span asp-validation-for="Priority" class="text-danger small"></span>
+                </div>
+
+                <!-- Description -->
+                <div class="col-12">
+                    <label asp-for="Description" class="form-label fw-medium text-dark"></label>
+                    <textarea asp-for="Description" rows="5" class="form-control" placeholder="Describe the steps to reproduce the issue or details of your request..."></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="d-flex justify-content-end gap-2 mt-5 pt-3 border-top" style="border-top-color: #eeeeee !important;">
+                <a asp-action="Index" class="brutalist-btn brutalist-btn-outline">Cancel</a>
+                <button type="submit" class="brutalist-btn brutalist-btn-primary">Submit Ticket</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

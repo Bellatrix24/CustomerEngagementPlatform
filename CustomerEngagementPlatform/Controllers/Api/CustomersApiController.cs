@@ -1,12 +1,15 @@
-﻿using CustomerEngagementPlatform.Data;
+using CustomerEngagementPlatform.Data;
 using CustomerEngagementPlatform.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace CustomerEngagementPlatform.Controllers.Api
 {
     [Route("api/customers")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Staff")]
     public class CustomersApiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;

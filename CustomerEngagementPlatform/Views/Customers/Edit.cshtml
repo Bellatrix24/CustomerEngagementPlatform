@@ -2,58 +2,171 @@
 
 @{
     ViewData["Title"] = "Edit Customer";
+    ViewData["HideNavbar"] = true;
 }
 
-<h1>Edit Customer</h1>
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Archivo:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 
-<h4>Customer Details</h4>
-<hr />
+    .portal-wrapper {
+        font-family: 'Archivo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: #111111;
+        background-color: #fafafa;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+    }
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    .brutalist-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.8rem;
+        padding: 0 1.5rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 0 !important;
+        transition: all 0.15s ease-in-out;
+        text-align: center;
+        box-sizing: border-box;
+        border: none;
+    }
+
+    .brutalist-btn-primary {
+        background-color: #111111;
+        color: #ffffff;
+        border: 2px solid #111111;
+    }
+
+    .brutalist-btn-primary:hover {
+        background-color: #333333;
+        border-color: #333333;
+        color: #ffffff;
+    }
+
+    .brutalist-btn-outline {
+        background-color: #ffffff;
+        color: #111111;
+        border: 1px solid #cccccc;
+        font-size: 0.85rem;
+        font-weight: 500;
+        height: 2.8rem;
+        padding: 0 1.5rem;
+    }
+
+    .brutalist-btn-outline:hover {
+        border-color: #111111;
+        background-color: #f9f9f9;
+        color: #111111;
+    }
+
+    .brutalist-card {
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
+        border-radius: 0 !important;
+        padding: 3rem;
+        box-shadow: none !important;
+    }
+
+    .form-control {
+        border-radius: 0 !important;
+        border: 1px solid #cccccc;
+        color: #111111;
+        padding: 0.75rem;
+    }
+
+    .form-control:focus {
+        border-color: #111111 !important;
+        box-shadow: none !important;
+    }
+
+    .action-link {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #111111;
+        text-decoration: underline;
+        transition: color 0.15s ease;
+    }
+
+    .action-link:hover {
+        color: #0044cc;
+    }
+</style>
+
+<div class="portal-wrapper">
+    <!-- Header/Back Navigation -->
+    <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <a asp-action="Index" class="text-decoration-none d-inline-flex align-items-center fw-medium" style="font-size: 0.95rem; color: #111111;">
+            ← Back to Customers
+        </a>
+        <div class="d-flex align-items-center gap-3 text-muted small flex-wrap">
+            <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-underline text-muted fw-medium" style="font-size: 0.9rem;">Dashboard</a>
+            <span class="text-muted">|</span>
+            <a asp-controller="Tickets" asp-action="Index" class="text-decoration-underline text-muted fw-medium" style="font-size: 0.9rem;">Tickets</a>
+            <span class="text-muted">|</span>
+            <span>Logged in as <strong>@User.Identity?.Name</strong></span>
+            <span class="text-muted">|</span>
+            <form class="d-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                <button type="submit" class="btn btn-link text-muted p-0 align-baseline text-decoration-underline small" style="font-size: 0.85rem;">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Title Header -->
+    <div class="mb-5 pb-4 border-bottom" style="border-bottom-color: #dddddd !important;">
+        <h1 class="display-6 mb-2" style="font-family: 'Fraunces', Georgia, serif; font-weight: 300; color: #111111; letter-spacing: -0.05rem;">Edit Customer</h1>
+        <p class="text-muted mb-0" style="font-size: 1.05rem;">Update customer contact details.</p>
+    </div>
+
+    <!-- Edit Form Container -->
+    <div class="brutalist-card">
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
 
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="CreatedAt" />
 
-            <div class="form-group mb-2">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="row g-4">
+                <!-- Name -->
+                <div class="col-12">
+                    <label asp-for="Name" class="form-label fw-semibold text-dark"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Customer Name" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <!-- Email -->
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label fw-semibold text-dark"></label>
+                    <input asp-for="Email" class="form-control" placeholder="customer@example.com" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <!-- Phone -->
+                <div class="col-md-6">
+                    <label asp-for="Phone" class="form-label fw-semibold text-dark"></label>
+                    <input asp-for="Phone" class="form-control" placeholder="Phone number" />
+                    <span asp-validation-for="Phone" class="text-danger small"></span>
+                </div>
+
+                <!-- Address -->
+                <div class="col-12">
+                    <label asp-for="Address" class="form-label fw-semibold text-dark"></label>
+                    <input asp-for="Address" class="form-control" placeholder="Street Address" />
+                    <span asp-validation-for="Address" class="text-danger small"></span>
+                </div>
             </div>
 
-            <div class="form-group mb-2">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-2">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-2">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mt-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <!-- Form Actions -->
+            <div class="d-flex justify-content-between align-items-center mt-5 pt-3 border-top" style="border-top-color: #eeeeee !important;">
+                <a asp-action="Index" class="action-link">Cancel</a>
+                <button type="submit" class="brutalist-btn brutalist-btn-primary">Save Changes</button>
             </div>
         </form>
     </div>
 </div>
 
-<div class="mt-2">
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }

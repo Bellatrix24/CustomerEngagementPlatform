@@ -1,11 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-CustomerEngagementPlatform-687f2f86-f6c3-48c6-97e0-e4d1e277a537</UserSecretsId>
+    <UserSecretsId>aspnet-CustomerEngagementPlatform-63c28955-aff8-4d67-98e0-9983610d4039</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove=".github\**" />
+    <Content Remove=".github\**" />
+    <EmbeddedResource Remove=".github\**" />
+    <None Remove=".github\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.27" />
@@ -25,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Documentation\Screenshots\Phase 1\" />
     <Folder Include="Helpers\" />
     <Folder Include="DevOps\" />
   </ItemGroup>
