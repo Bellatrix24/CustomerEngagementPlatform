@@ -267,7 +267,7 @@
 
     <!-- Search and Filter Panel -->
     <div class="brutalist-card mb-5">
-        <form asp-action="Index" method="get" class="row g-3">
+        <form id="filterForm" asp-action="Index" method="get" class="row g-3">
             <div class="col-md-4">
                 <input type="text"
                        name="searchString"
@@ -316,7 +316,7 @@
     <script>
         $(document).ready(function () {
             // Intercept form submission
-            $('form').submit(function (e) {
+            $('#filterForm').submit(function (e) {
                 e.preventDefault(); // Prevent normal postback
                 
                 var form = $(this);
@@ -341,7 +341,7 @@
 
             // Automatically trigger filter on dropdown change
             $('select[name="statusFilter"], select[name="priorityFilter"]').change(function () {
-                $('form').submit();
+                $('#filterForm').submit();
             });
 
             // Automatically trigger filter on search input typing (debounced at 300ms)
@@ -350,7 +350,7 @@
             $('input[name="searchString"]').on('input', function () {
                 clearTimeout(typingTimer);
                 typingTimer = setTimeout(function() {
-                    $('form').submit();
+                    $('#filterForm').submit();
                 }, doneTypingInterval);
             });
         });
